@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Generative Art Gallery</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #0d1117; color: #c9d1d9; text-align: center; }
+        h1 { margin: 2rem; }
+        #gallery { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; padding: 20px; }
+        .art-card { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; overflow: hidden; }
+        img { display: block; width: 300px; height: 300px; object-fit: cover; }
+        p { margin: 0.8rem; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Daily Generative Art Gallery</h1>
+    <div id="gallery">Loading artwork...</div>
+
+    <script>
+        const username = 'AndyFerns'; 
+        const repo = 'DrawBot'; 
+        const gallery = document.getElementById('gallery');
+        const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/art`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                gallery.innerHTML = ''; // Clear loading message
+                // Sort files in reverse chronological order
+                data.sort((a, b) => b.name.localeCompare(a.name));
+
+                data.forEach(file => {
+                    if (file.name.endsWith('.png')) {
+                        const artCard = document.createElement('div');
+                        artCard.className = 'art-card';
+
+                        const img = document.createElement('img');
+                        img.src = file.download_url;
+                        img.alt = `Art for ${file.name.replace('.png', '')}`;
+
+                        const datePara = document.createElement('p');
+                        datePara.textContent = file.name.replace('.png', '');
+
+                        artCard.appendChild(img);
+                        artCard.appendChild(datePara);
+                        gallery.appendChild(artCard);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching artwork:', error);
+                gallery.innerHTML = 'Could not load artwork. Please check the console for errors.';
+            });
+    </script>
+</body>
+</html>
