@@ -9,6 +9,30 @@ WIDTH = 1080
 HEIGHT = 1080
 ART_DIR = "art"
 
+PALETTES = [
+    {
+        "name": "Cosmic Scene",
+        "bg_start": (0, 0, 10),
+        "bg_end": (5, 0, 25),
+        "lines": [(255, 255, 255), (100, 100, 255)],
+        "grid": (40, 40, 80),
+    },
+    {
+        "name": "Fever Dream",
+        "bg_start": (20, 5, 5),
+        "bg_end": (50, 10, 10),
+        "lines": [(255, 220, 180), (255, 100, 100)],
+        "grid": (100, 60, 60),
+    },
+    {
+        "name": "Glitches in Space",
+        "bg_start": (15, 25, 15),
+        "bg_end": (0, 10, 0),
+        "lines": [(200, 255, 200), (150, 255, 250)],
+        "grid": (50, 90, 50),
+    },
+]
+
 
 def generate_seeded_art():
     """
