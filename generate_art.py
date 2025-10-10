@@ -91,6 +91,28 @@ def draw_fractured_grid(draw, width, height, palette):
             if j + 1 < len(points[i]):
                 draw.line([points[i][j], points[i][j+1]], fill=palette["grid"], width=1)
 
+def draw_perlin_noise():
+    """
+    TODO
+    generate organic, cloud-like textures for backgrounds or to influence the paths of walkers
+    """
+    pass
+
+def draw_spline_curves():
+    """
+    TODO
+    draw smooth, flowing Bézier curves 
+    """
+    pass
+
+
+"""
+TODO: Implement Dynamic Color Palettes. Generate color schemes on the fly instead of picking from a fixed list.
+
+Start with a single base color derived from the day's seed.
+
+Use color theory rules (e.g., complementary, triadic, analogous) to programmatically generate a full, harmonious palette from that base color.
+"""
 
 def generate_seeded_art():
     """
@@ -103,38 +125,29 @@ def generate_seeded_art():
     random.seed(seed)
 
     print(f"Generating art for {date_str} with seed {seed}")
+    
+    #select palette for the day randomly
+    palette = random.choice(PALETTES)
+    print(f"Using {palette["name"]} for {date_str}\n")
 
     # base image values
-    bg_color = (random.randint(0, 50), random.randint(0, 50), random.randint(0, 50))
-    img = Image.new('RGB', (WIDTH, HEIGHT), color=bg_color)
-    draw = ImageDraw.Draw(img, 'RGBA') # RGBA for transparency
+    img = Image.new('RGB', (WIDTH, HEIGHT))
+    draw = ImageDraw.Draw(img) # RGBA for transparency
+    
+    # background gradient
+    draw_gradient_background(draw, WIDTH, HEIGHT, palette["bg_start"], palette["bg_end"])
 
-    num_circles = random.randint(50, 150)
+    # add artistic elements    
+    draw_fractured_grid(draw, WIDTH, HEIGHT, palette)
+    draw_chaotic_walkers(draw, WIDTH, HEIGHT, palette)
 
-    for _ in range(num_circles):
-        # Random position
-        x = random.randint(0, WIDTH)
-        y = random.randint(0, HEIGHT)
-        
-        # Random radius
-        radius = random.randint(50, 300)
-        
-        # Random color with transparency (Alpha channel)
-        r = random.randint(0, 255)
-        g = random.randint(0, 255)
-        b = random.randint(0, 255)
-        alpha = random.randint(50, 100) # Semi-transparent
-        color = (r, g, b, alpha)
-        
-        # Draw the circle (as an ellipse with the same width and height)
-        draw.ellipse([x - radius, y - radius, x + radius, y + radius], fill=color)
 
     # Ensure the 'art' directory exists
     os.makedirs(ART_DIR, exist_ok=True)
     
     file_path = os.path.join(ART_DIR, f"{date_str}.png")
     img.save(file_path)
-    print(f"✅ Art saved successfully to {file_path}")
+    print(f"Art saved successfully to {file_path}")
 
 
 if __name__ == '__main__':
