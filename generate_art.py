@@ -128,7 +128,7 @@ def generate_seeded_art():
     
     #select palette for the day randomly
     palette = random.choice(PALETTES)
-    print(f"Using {palette["name"]} for {date_str}\n")
+    print(f"Using {palette['name']} for {date_str}\n")
 
     # base image values
     img = Image.new('RGB', (WIDTH, HEIGHT))
